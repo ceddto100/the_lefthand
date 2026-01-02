@@ -105,12 +105,12 @@ export async function insertPostResult(
  * Get all results for a request_id
  */
 export async function findResultsByRequestId(requestId: string): Promise<TargetResult[]> {
-  const result = await pool.query<PostResultRow>(
+ const result = await pool.query<PostResultRow>(
     'SELECT * FROM post_results WHERE request_id = $1 ORDER BY created_at ASC',
     [requestId]
   );
 
-  return result.rows.map(row => ({
+  return result.rows.map((row: PostResultRow) => ({
     target: row.target as TargetPlatform,
     status: row.status as TargetResult['status'],
     platform_id: row.platform_id || undefined,
@@ -130,7 +130,7 @@ export async function findFailedTargets(requestId: string): Promise<TargetPlatfo
     [requestId]
   );
 
-  return result.rows.map(row => row.target as TargetPlatform);
+  return result.rows.map((row: { target: string }) => row.target as TargetPlatform);
 }
 
 /**
@@ -158,7 +158,7 @@ export async function listRecentPosts(limit: number = 50) {
     [limit]
   );
 
-  return result.rows.map(row => {
+  return result.rows.map((row: PostRequestRow & { results: PostResultRow[] | null }) => {
     const content = row.content_json as unknown as NormalizedContent;
     const targets = row.targets_json as unknown as TargetPlatform[];
     const results = (row.results || []) as unknown as { target: TargetPlatform; status: string; platform_url?: string }[];

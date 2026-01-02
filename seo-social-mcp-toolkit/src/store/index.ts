@@ -15,7 +15,7 @@ export const pool = new Pool({
 });
 
 // Handle pool errors
-pool.on('error', (err) => {
+pool.on('error', (err: Error) => {
   logger.error({ error: err.message }, 'Unexpected database error');
 });
 
