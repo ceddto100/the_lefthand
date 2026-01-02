@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: seo-social-mcp-toolkit
+    runtime: node
+    rootDir: ./seo-social-mcp-toolkit
+    buildCommand: yarn install && yarn build
+    startCommand: yarn start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: DATABASE_URL
+        sync: false
+      - key: DISCORD_BOT_TOKEN
+        sync: false
+      - key: X_API_KEY
+        sync: false
+      - key: X_API_SECRET
+        sync: false
+      - key: X_ACCESS_TOKEN
+        sync: false
+      - key: X_ACCESS_SECRET
+        sync: false
+
+  - type: pserv
+    name: seo-social-mcp-postgres
+    plan: starter
+    ipAllowList: []
+    databaseName: seo_social_mcp
+    databaseUser: seo_user
